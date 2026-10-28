@@ -1,11 +1,17 @@
-# GoO ELÉTRICOS — prévia conceitual
+# GoO ELÉTRICOS — protótipo de catálogo
 
-Protótipo de página única com botão **Trocar design** para alternar entre três direções. A prancha visual completa usa mockups de desktop e celular do próprio protótipo: veja [arte.html](arte.html) ou [arte.png](arte.png). Inspirado no fluxo do catálogo VÉLO: categoria, busca, comparação e consulta humana por WhatsApp.
+Conceito responsivo de catálogo digital para a GoO em Jacareí, com três direções visuais alternáveis pelo botão **Trocar design**. O fluxo permite filtrar e buscar modelos, ver detalhes, salvar uma seleção, comparar até três opções e iniciar uma consulta à loja pelo WhatsApp.
 
-Prévia conceitual com fotos da GoO e referências do catálogo enviado no WhatsApp. Valores, versão e estoque não foram tratados como atuais.
+## Apresentação visual
 
-## Fontes de fotos e conteúdo
+- [Prancha de apresentação em PNG](arte.png)
+- [Página da prancha](arte.html)
+- Capturas originais de desktop e mobile em `screenshots/`.
 
-GoO product photos from the official public product listing https://gooeletricos.com.br/produtos/ and seller-provided WhatsApp catalog PDF. Product details/prices should be reconfirmed.
+A prancha usa capturas reais do protótipo executado no navegador, nas três direções. O fluxo segue o padrão dos conceitos VÉLO: produto, comparação e conversa com a equipe no mesmo percurso.
 
-As imagens permanecem identificadas nos textos alternativos e não são tratadas como estoque garantido.
+## Dados e limites do conceito
+
+Os modelos e as fotos foram baseados na linha pública da GoO e no catálogo enviado pela loja. A mensagem recebida em 27/10/2026 indicava pronta-entrega naquele momento. Preços, ficha técnica, versão e estoque atuais não estão confirmados no protótipo e devem ser validados diretamente com a equipe antes de qualquer publicação comercial.
+
+Fotos de produto: https://gooeletricos.com.br/produtos/

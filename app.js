@@ -1,7 +1,147 @@
-(() => { const p=window.PROJECT; const $=s=>document.querySelector(s); let dir=Math.min(2,Math.max(0,Number(new URLSearchParams(location.search).get('direction'))||0)),cat='Todos',query='',chosen=new Set(),fav=new Set(); const wa=(prod)=>'https://wa.me/'+p.phone+'?text='+encodeURIComponent('Oi! Vi '+(prod?'o modelo '+prod.name:'o catálogo')+' e queria tirar uma dúvida.'); document.querySelectorAll('.wa-link').forEach(a=>a.href=wa());
-const productCards=()=>p.products.filter(x=>(cat==='Todos'||x.category===cat)&&(!query||x.name.toLowerCase().includes(query)||x.category.toLowerCase().includes(query))).map(x=>'<article class="product-card"><a class="photo" href="#contato" aria-label="Ver '+x.name+'"><img src="images/'+x.img+'" alt="'+x.alt+'" loading="lazy"><span class="photo-index">'+x.category.toUpperCase()+'</span></a><div class="product-info"><p class="kicker">'+x.category.toUpperCase()+'</p><h3>'+x.name+'</h3><p>'+x.detail+'</p><div class="card-actions"><a href="'+wa(x)+'" target="_blank" rel="noreferrer">Perguntar sobre este modelo ↗</a><button class="favorite" data-fav="'+x.name+'" aria-label="Salvar '+x.name+'">'+(fav.has(x.name)?'♥':'♡')+'</button><label class="pick"><input type="checkbox" data-pick="'+x.name+'" '+(chosen.has(x.name)?'checked':'')+'> Comparar</label></div></div></article>').join('');
-const hero=()=>{ const featured=p.products[0]; if(p.dir==='eletribikes-paulimar') return dir===0?'<section class="hero split dual"><div class="hero-copy"><p class="kicker">'+p.eyebrow+'</p><h1>Uma marca.<br><em>Um caminho.</em></h1><p>'+p.lead+'</p><div class="door-grid"><button data-brand="eletri">EletriBikes <span>Bikes e scooters ↗</span></button><button data-brand="baby">PaulimarBaby <span>Enxoval e infantil ↗</span></button></div></div><div class="hero-photo"><img src="images/flash-r002.webp" alt="Bicicleta elétrica Flash R002, fotografia oficial do fabricante"><small>Mobilidade · foto oficial Flash</small></div></section>':dir===1?'<section class="hero stacked dual"><div class="hero-photo"><img src="images/flash-x20.webp" alt="Bicicleta elétrica Flash X20 Pro, fotografia oficial do fabricante"></div><div class="hero-copy"><p class="kicker">'+p.eyebrow+'</p><h1>EletriBikes<br><em>e PaulimarBaby.</em></h1><p>'+p.lead+'</p><div class="door-grid"><button data-brand="eletri">Ver bicicletas <span>EletriBikes ↗</span></button><button data-brand="baby">Ver categorias <span>PaulimarBaby ↗</span></button></div></div></section>':'<section class="hero guided dual"><div class="hero-copy"><p class="kicker">POR ONDE VOCÊ QUER COMEÇAR?</p><h1>Escolha a<br><em>marca.</em></h1><p>Os dois catálogos ficam organizados por interesse, com contato claro para cada conversa.</p></div><div class="brand-tiles"><button data-brand="eletri"><img src="images/flash-r002.webp" alt="Foto oficial da bicicleta elétrica Flash R002"><span>01 / MOBILIDADE</span><b>EletriBikes ↗</b></button><button data-brand="baby"><div class="baby-symbol" aria-hidden="true">P<span>BABY</span></div><span>02 / INFANTIL</span><b>PaulimarBaby ↗</b></button></div></section>';
-const product=p.products[0]; return dir===0?'<section class="hero split"><div class="hero-copy"><p class="kicker">'+p.eyebrow+' · '+p.place+'</p><h1>'+p.headline+'</h1><p>'+p.lead+'</p><div class="hero-actions"><a class="button dark" href="#catalogo">Ver catálogo ↓</a><a class="text-link wa-link" target="_blank" rel="noreferrer">Conversar com a equipe ↗</a></div><span class="hero-mark">01 — '+p.brand+'</span></div><div class="hero-photo"><img src="images/'+product.img+'" alt="'+product.alt+'"><small>'+product.name+' · foto real da linha</small></div></section>':dir===1?'<section class="hero stacked"><div class="hero-photo"><img src="images/'+product.img+'" alt="'+product.alt+'"><span class="photo-title">'+p.brand.split(' ')[0]+'<br><i>em movimento.</i></span></div><div class="hero-copy"><p class="kicker">'+p.eyebrow+'</p><h1>'+p.headline+'</h1><p>'+p.lead+'</p><a class="button dark" href="#catalogo">Explorar modelos ↘</a><span class="hero-mark">'+p.place+'</span></div></section>':'<section class="hero guided"><div class="hero-copy"><p class="kicker">'+p.eyebrow+'</p><h1>O que faz parte da sua rotina?</h1><p>Comece pelo tipo de veículo, compare detalhes e leve sua dúvida à equipe.</p></div><div class="guide-choices">'+p.categories.filter(c=>c!=='Todos').map((c,i)=>'<button data-category="'+c+'"><span>0'+(i+1)+'</span><b>'+c+'</b><i>Explorar ↗</i></button>').join('')+'<a class="guide-photo" href="#catalogo"><img src="images/'+product.img+'" alt="'+product.alt+'"></a></div></section>'; };
-const babyGrid=()=>p.babyProducts.map(x=>'<article class="product-card baby-product"><a class="photo" href="#contato"><img src="images/'+x.img+'" alt="'+x.name+' — foto real do catálogo WhatsApp PaulimarBaby" loading="lazy"><span class="photo-index">'+x.category.toUpperCase()+'</span></a><div class="product-info"><p class="kicker">'+x.category.toUpperCase()+'</p><h3>'+x.name+'</h3><p>'+x.desc+'</p><div class="card-actions"><span class="baby-price">'+x.price+' <small>no catálogo</small></span><a href="'+wa({name:x.name})+'" target="_blank" rel="noreferrer">Consultar ↗</a></div></div></article>').join('');
-const render=()=>{document.body.dataset.direction=dir; $('#experience').innerHTML=hero(); $('#filters').innerHTML=p.categories.map(c=>'<button class="filter '+(cat===c?'active':'')+'" data-filter="'+c+'">'+c+'</button>').join(''); $('#productGrid').innerHTML=productCards()||'<p class="empty">Nenhum modelo encontrado.</p>'; document.querySelectorAll('.wa-link').forEach(a=>{if(!a.hasAttribute('href')||a.getAttribute('href')==='#')a.href=wa()}); $('#designToggle').innerHTML='Trocar design <b>0'+(dir+1)+' / 03 · '+p.directions[dir][0]+'</b> ↗'; $('#brandArea').innerHTML=p.dir==='eletribikes-paulimar'?'<section class="brand-area"><div class="baby-panel"><div><p class="kicker">PAULIMARBABY</p><h2>Um catálogo próprio para o universo infantil.</h2><p>O catálogo tem várias seções: jogos de quarto 2025, berços de madeira e portáteis, banheiras, cadeirinhas, carrinhos e bebê reborn.</p><p class="photo-note">As fotos dos cartões abaixo foram tiradas do catálogo compartilhado. Valores, acabamentos e disponibilidade precisam ser confirmados.</p><a class="button dark" href="'+wa({name:'PaulimarBaby'})+'" target="_blank" rel="noreferrer">Perguntar à PaulimarBaby ↗</a> <a class="text-link" href="https://linktr.ee/paulimarbaby" target="_blank" rel="noreferrer">Contatos por cidade ↗</a></div><div class="baby-mark" aria-hidden="true">P<span>desde 1994</span></div></div><div class="baby-catalog"><div class="section-head"><div><p class="kicker">PAULIMARBABY · CATÁLOGO</p><h2>Um cantinho para cada fase.</h2></div><p>Seções observadas no catálogo do WhatsApp; os cartões mostram apenas quatro exemplos com fotos disponíveis.</p></div><div class="baby-category-list">'+p.babyCategories.map(x=>'<span>'+x+'</span>').join('')+'</div><div class="baby-product-grid">'+babyGrid()+'</div></div><div class="brand-foot"><span>ELETRIBIKES · @eletribikes</span><span>PAULIMARBABY · LINKTREE / WHATSAPP</span><span>CATÁLOGO ATUAL COMPARTILHADO NO MESMO CONTATO</span></div></section>':''; $('#designToggle').setAttribute('aria-label','Trocar direção visual. Atual: '+p.directions[dir][0]); };
-$('#designToggle').addEventListener('click',()=>{dir=(dir+1)%3; render()}); $('#search').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase(); render()}); document.addEventListener('click',e=>{const f=e.target.closest('[data-filter]'); if(f){cat=f.dataset.filter;render()} const c=e.target.closest('[data-category]'); if(c){cat=c.dataset.category;document.querySelector('#catalogo').scrollIntoView({behavior:'smooth'});render()} const b=e.target.closest('[data-brand]'); if(b){if(b.dataset.brand==='eletri'){cat='Todos';document.querySelector('#catalogo').scrollIntoView({behavior:'smooth'});render()}else document.querySelector('#brandArea').scrollIntoView({behavior:'smooth'})} const fv=e.target.closest('[data-fav]'); if(fv){fav.has(fv.dataset.fav)?fav.delete(fv.dataset.fav):fav.add(fv.dataset.fav);render()} const pick=e.target.closest('[data-pick]'); if(pick){pick.checked?chosen.add(pick.dataset.pick):chosen.delete(pick.dataset.pick);$('#compareCount').textContent=chosen.size} }); $('#compare').addEventListener('click',()=>{const selected=p.products.filter(x=>chosen.has(x.name)); if(!selected.length){$('#compareTable').innerHTML='<p>Marque “Comparar” em dois ou mais modelos para ver lado a lado.</p>'}else $('#compareTable').innerHTML='<div class="compare-table">'+selected.map(x=>'<article><img src="images/'+x.img+'" alt="'+x.alt+'"><h3>'+x.name+'</h3><p>'+x.detail+'</p><a href="'+wa(x)+'" target="_blank" rel="noreferrer">Perguntar ↗</a></article>').join('')+'</div>';$('#compareDialog').showModal()}); render(); })();
+(() => {
+  const project = window.PROJECT;
+  const $ = (selector) => document.querySelector(selector);
+  const storage = {
+    read(key) { try { return JSON.parse(localStorage.getItem(`goo-${key}`) || '[]'); } catch { return []; } },
+    write(key, value) { try { localStorage.setItem(`goo-${key}`, JSON.stringify([...value])); } catch {} }
+  };
+  let direction = Math.min(2, Math.max(0, Number(new URLSearchParams(location.search).get('direction')) || 0));
+  let category = 'Todos';
+  let query = '';
+  let sort = 'featured';
+  const selected = new Set(storage.read('selection'));
+  const favorites = new Set(storage.read('favorites'));
+  const compared = new Set();
+  const escape = (value) => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const contactUrl = (message) => `https://wa.me/${project.phone}?text=${encodeURIComponent(message)}`;
+  const ask = (model) => contactUrl(model ? `Oi! Vi o modelo ${model.name} no catálogo e queria consultar alguns detalhes.` : 'Oi! Vi o catálogo da GoO e gostaria de conversar com a equipe.');
+  const productByName = (name) => project.products.find((product) => product.name === name);
+
+  document.querySelectorAll('.wa-link').forEach((link) => { link.href = ask(); });
+
+  function renderHero() {
+    const first = project.products[0];
+    if (direction === 0) {
+      return `<section class="hero split"><div class="hero-copy"><p class="kicker">${project.eyebrow} · ${project.place}</p><h1>${project.headline}</h1><p>${project.lead}</p><div class="hero-actions"><a class="button dark" href="#catalogo">Explorar modelos ↓</a><a class="text-link wa-link" target="_blank" rel="noreferrer">Conversar com a equipe ↗</a></div><span class="hero-mark">01 — CATÁLOGO GoO</span></div><div class="hero-photo"><img src="images/${first.img}" alt="${escape(first.alt)}"><small>${first.name} · foto publicada pela GoO</small></div></section>`;
+    }
+    if (direction === 1) {
+      return `<section class="hero stacked"><div class="hero-photo"><img src="images/${first.img}" alt="${escape(first.alt)}"><span class="photo-title">GoO<br><i>em movimento.</i></span></div><div class="hero-copy"><p class="kicker">${project.eyebrow}</p><h1>Detalhes para escolher com mais clareza.</h1><p>${project.lead} A ficha e a disponibilidade atuais são confirmadas com a loja.</p><a class="button dark" href="#catalogo">Ver modelos e comparar ↘</a><span class="hero-mark">02 — FICHA & COMPARAÇÃO · ${project.place}</span></div></section>`;
+    }
+    const categories = project.categories.filter((item) => item !== 'Todos');
+    const cards = categories.map((item, index) => {
+      const model = project.products.find((product) => product.category === item);
+      if (!model) return '';
+      const support = item === 'Bikes' ? 'Bicicletas elétricas' : 'Scooters elétricas';
+      return `<button class="guide-tile" type="button" data-category="${escape(item)}"><img src="images/${model.img}" alt="${escape(model.alt)}"><span>0${index + 1} / ${escape(item)}</span><b>${support}</b><i>Ver modelos ↗</i></button>`;
+    }).join('');
+    return `<section class="hero guided"><div class="hero-copy"><p class="kicker">${project.eyebrow}</p><h1>O que faz parte da sua rotina?</h1><p>Comece pelo tipo de veículo, compare os modelos e leve sua pergunta à equipe.</p><span class="hero-mark">03 — ESCOLHA POR CATEGORIA · ${project.place}</span></div><div class="guide-choices">${cards}</div></section>`;
+  }
+
+  function filteredProducts() {
+    const term = query.trim().toLocaleLowerCase('pt-BR');
+    let items = project.products.filter((product) => (category === 'Todos' || product.category === category) && (!term || `${product.name} ${product.category}`.toLocaleLowerCase('pt-BR').includes(term)));
+    if (sort === 'az') items = [...items].sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+    if (sort === 'za') items = [...items].sort((a, b) => b.name.localeCompare(a.name, 'pt-BR'));
+    return items;
+  }
+
+  function renderProducts() {
+    const products = filteredProducts();
+    $('#resultCount').textContent = `${products.length} ${products.length === 1 ? 'modelo' : 'modelos'}`;
+    $('#productGrid').innerHTML = products.length ? products.map((product) => {
+      const name = escape(product.name);
+      return `<article class="product-card"><button class="photo" type="button" data-detail="${name}" aria-label="Ver detalhes de ${name}"><img src="images/${product.img}" alt="${escape(product.alt)}" loading="lazy"><span class="photo-index">${escape(product.category)}</span><span class="photo-open">Ver detalhes ↗</span></button><div class="product-info"><p class="kicker">${escape(product.category)} · GoO</p><h3>${name}</h3><p>${escape(product.detail)}</p><div class="card-actions"><a href="${ask(product)}" target="_blank" rel="noreferrer">Perguntar sobre o modelo ↗</a><button class="favorite" type="button" data-favorite="${name}" aria-label="${favorites.has(product.name) ? 'Remover dos favoritos' : 'Salvar nos favoritos'}: ${name}" aria-pressed="${favorites.has(product.name)}">${favorites.has(product.name) ? '♥' : '♡'}</button><label class="pick"><input type="checkbox" data-compare="${name}" ${compared.has(product.name) ? 'checked' : ''}> Comparar</label><button class="selection-add" type="button" data-select="${name}" aria-pressed="${selected.has(product.name)}">${selected.has(product.name) ? 'Na minha seleção ✓' : 'Salvar modelo +'}</button></div></div></article>`;
+    }).join('') : '<p class="empty">Não encontramos modelos com esse filtro. Tente outra busca.</p>';
+    $('#compareCount').textContent = compared.size;
+    $('#compare').setAttribute('aria-pressed', String(compared.size > 0));
+    $('#compare').classList.toggle('compare-active', compared.size > 0);
+  }
+
+  function render() {
+    const scrollY = window.scrollY;
+    document.body.dataset.direction = String(direction);
+    $('#experience').innerHTML = renderHero();
+    $('#filters').innerHTML = project.categories.map((item) => `<button class="filter ${category === item ? 'active' : ''}" type="button" data-filter="${escape(item)}" aria-pressed="${category === item}">${escape(item)}</button>`).join('');
+    document.querySelectorAll('.wa-link').forEach((link) => { link.href = ask(); });
+    $('#designToggle').innerHTML = `<span class="toggle-desktop">Trocar design <b>0${direction + 1} / 03 · ${escape(project.directions[direction][0])}</b> ↗</span><span class="toggle-mobile"><b>Design 0${direction + 1} / 03</b> ↗</span>`;
+    $('#designToggle').setAttribute('aria-label', `Trocar design. Direção atual: ${project.directions[direction][0]}. Ative para ver a próxima.`);
+    $('#designToggle').title = project.directions[direction][1];
+    renderProducts();
+    renderSelectionCount();
+    window.scrollTo({ top: scrollY, behavior: 'instant' });
+  }
+
+  function renderSelectionCount() {
+    $('#selectionCount').textContent = selected.size;
+    $('#selectionItems').innerHTML = selected.size ? `<ul class="selection-list">${[...selected].map((name) => productByName(name)).filter(Boolean).map((product) => `<li><span>${escape(product.name)} <small>${escape(product.category)}</small></span><button type="button" data-remove="${escape(product.name)}" aria-label="Remover ${escape(product.name)} da seleção">Remover</button></li>`).join('')}</ul>` : '<p class="empty-selection">Sua seleção está vazia. Salve um modelo para consultar a equipe depois.</p>';
+    const names = [...selected].filter(productByName);
+    const text = names.length ? `Oi! Vi o catálogo da GoO e gostaria de conversar sobre: ${names.join(', ')}.` : 'Oi! Vi o catálogo da GoO e gostaria de conversar com a equipe.';
+    $('#selectionContact').href = contactUrl(text);
+    $('#selectionContact').classList.toggle('is-disabled', !names.length);
+    $('#selectionContact').setAttribute('aria-disabled', String(!names.length));
+  }
+
+  function openDetails(name) {
+    const product = productByName(name);
+    if (!product) return;
+    $('#detailContent').innerHTML = `<div class="detail-layout"><img src="images/${product.img}" alt="${escape(product.alt)}"><div><p class="kicker">${escape(product.category)} · GoO</p><h2>${escape(product.name)}</h2><p>${escape(product.detail)}</p><dl class="detail-facts"><div><dt>Categoria</dt><dd>${escape(product.category)}</dd></div><div><dt>Ficha técnica</dt><dd>Consulte a equipe</dd></div><div><dt>Valor e disponibilidade</dt><dd>Confirme com a loja</dd></div></dl><div class="detail-actions"><a class="button dark" href="${ask(product)}" target="_blank" rel="noreferrer">Perguntar sobre ${escape(product.name)} ↗</a><button type="button" class="selection-add" data-select="${escape(product.name)}" aria-pressed="${selected.has(product.name)}">${selected.has(product.name) ? 'Na minha seleção ✓' : 'Salvar na minha seleção +'}</button></div></div></div>`;
+    $('#detailDialog').showModal();
+  }
+
+  function openComparison() {
+    const list = [...compared].map(productByName).filter(Boolean);
+    $('#compareTable').innerHTML = list.length ? `<div class="compare-table">${list.map((product) => `<article><img src="images/${product.img}" alt="${escape(product.alt)}"><p class="kicker">${escape(product.category)}</p><h3>${escape(product.name)}</h3><p>${escape(product.detail)}</p><a href="${ask(product)}" target="_blank" rel="noreferrer">Perguntar sobre o modelo ↗</a></article>`).join('')}</div>` : '<p>Ative “Comparar” e marque os modelos que quer ver lado a lado. Você pode selecionar até três.</p>';
+    $('#compareDialog').showModal();
+  }
+
+  $('#designToggle').addEventListener('click', () => { direction = (direction + 1) % 3; render(); });
+  $('#search').addEventListener('input', (event) => { query = event.target.value; renderProducts(); });
+  $('#sortSelect').addEventListener('change', (event) => { sort = event.target.value; renderProducts(); });
+  $('#compare').addEventListener('click', openComparison);
+  $('#selectionOpen').addEventListener('click', () => { renderSelectionCount(); $('#selectionDialog').showModal(); });
+
+  document.addEventListener('change', (event) => {
+    const checkbox = event.target.closest('[data-compare]');
+    if (!checkbox) return;
+    const name = checkbox.dataset.compare;
+    if (checkbox.checked && compared.size >= 3) { checkbox.checked = false; return; }
+    checkbox.checked ? compared.add(name) : compared.delete(name);
+    $('#compareCount').textContent = compared.size;
+    $('#compare').setAttribute('aria-pressed', String(compared.size > 0));
+    $('#compare').classList.toggle('compare-active', compared.size > 0);
+  });
+
+  document.addEventListener('click', (event) => {
+    const filterButton = event.target.closest('[data-filter]');
+    if (filterButton) { category = filterButton.dataset.filter; render(); return; }
+    const categoryButton = event.target.closest('[data-category]');
+    if (categoryButton) { category = categoryButton.dataset.category; render(); $('#catalogo').scrollIntoView({ behavior: 'smooth' }); return; }
+    const detailButton = event.target.closest('[data-detail]');
+    if (detailButton) { openDetails(detailButton.dataset.detail); return; }
+    const favoriteButton = event.target.closest('[data-favorite]');
+    if (favoriteButton) {
+      const name = favoriteButton.dataset.favorite;
+      favorites.has(name) ? favorites.delete(name) : favorites.add(name);
+      storage.write('favorites', favorites);
+      renderProducts(); return;
+    }
+    const selectionButton = event.target.closest('[data-select]');
+    if (selectionButton) {
+      const name = selectionButton.dataset.select;
+      selected.has(name) ? selected.delete(name) : selected.add(name);
+      storage.write('selection', selected);
+      renderProducts(); renderSelectionCount(); return;
+    }
+    const removeButton = event.target.closest('[data-remove]');
+    if (removeButton) {
+      selected.delete(removeButton.dataset.remove);
+      storage.write('selection', selected);
+      renderProducts(); renderSelectionCount();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') document.querySelectorAll('dialog[open]').forEach((dialog) => dialog.close());
+  });
+  render();
+})();

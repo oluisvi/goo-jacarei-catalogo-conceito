@@ -63,7 +63,7 @@
     $('#experience').innerHTML = renderHero();
     $('#filters').innerHTML = project.categories.map((item) => `<button class="filter ${category === item ? 'active' : ''}" type="button" data-filter="${escape(item)}" aria-pressed="${category === item}">${escape(item)}</button>`).join('');
     document.querySelectorAll('.wa-link').forEach((link) => { link.href = ask(); });
-    $('#designToggle').innerHTML = `<span class="toggle-desktop">Trocar design <b>0${direction + 1} / 03 · ${escape(project.directions[direction][0])}</b> ↗</span><span class="toggle-mobile"><b>Design 0${direction + 1} / 03</b> ↗</span>`;
+    $('#designToggle').innerHTML = `Trocar design <b>0${direction + 1} / 03 · ${escape(project.directions[direction][0])}</b> ↗`;
     $('#designToggle').setAttribute('aria-label', `Trocar design. Direção atual: ${project.directions[direction][0]}. Ative para ver a próxima.`);
     $('#designToggle').title = project.directions[direction][1];
     renderProducts();
